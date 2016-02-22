@@ -65,7 +65,35 @@ q8t3 PC <-- IR(0), x3 = NOR(AC)
 q8t4 reset time  , x6 = 1
 
 3. Narrative:
+Corrected Bugs:
+Removed PC and IR(O) inputs into the MUX that selects the input for the
+accumalator. These are unnecessary because they were used in the faulty JMP
+and have no other purpose. 
+Removed the MUX input into the ALU. This is because the ALU needs two 4-bit
+inputs: 4 bits for each sequence that is operated upon. 
 
+Added Circuitry:
+To account for the SUB operation, we knew we could not alter the accumalator.
+Therefore, we needed to invert and add 1 to the data we were subtracting.
+To add 1, we include a new x-signal, called x14, which is turned on to 1 for
+a subtraction operation, but is 0 for the normal add operation. This is the
+carry-in. To invert, we needed to use the carry-in option as a way to invert.
+Our requirements were that with a 0 the input remains the same, and with a 1
+the input is inverted. This is the truth table for a XOR. The solution is to
+run each bit of the second input through a XOR with the first carry-in. This
+becomes a part of our ALU.  This is the simplest solution because it only
+requires one extra x-signal and the rest can be included in the 
+circuitry of the CLU.
 
+To account for the JPZ operation, we needed a way to check if the data in the
+accumlator contains all zeros. This can be accomplished by running each bit
+with itself through a NOR gate. If the bit is a 0, a 1 is output from the 
+gate. If the bit is a 1, a 0 is output from the gate. All of these outputs
+are sent through an AND and this is sent as the x3 signal, which determines
+whether the PC loads input from the IR(O) or not. This is the simplest
+solution because it makes use of a pre-existing x-signal, and requires only
+one gate per bit to determine if it is equal to zero.
+The x8 signal was changed to be input to the ALU as a selector for the 
+operator to be applied.
 
 Problem 2
