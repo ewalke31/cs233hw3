@@ -86,14 +86,15 @@ requires one extra x-signal and the rest can be included in the
 circuitry of the CLU.
 
 To account for the JPZ operation, we needed a way to check if the data in the
-accumlator contains all zeros. This can be accomplished by running each bit
-with itself through a NOR gate. If the bit is a 0, a 1 is output from the 
-gate. If the bit is a 1, a 0 is output from the gate. All of these outputs
-are sent through an AND and this is sent as the x3 signal, which determines
-whether the PC loads input from the IR(O) or not. This is the simplest
-solution because it makes use of a pre-existing x-signal, and requires only
-one gate per bit to determine if it is equal to zero.
-The x8 signal was changed to be input to the ALU as a selector for the 
-operator to be applied.
+accumlator contains all zeros. This can be accomplished by running the bits
+through four parallel NOR gates. If the bits are 0, a 1 is output from the 
+gate. If the bits are anything else (0,1), (1,0), (1,1), a 0 is output from
+the gate. The outputs of these are then put through two AND gates, and the
+output of these are then put through a final AND gate, which is sent as the
+x3 signal, which determines whether the PC loads input from the IR(O) or not.
+This is the simplest solution because it makes use of a pre-existing x-signal,
+and requires only one gate per bit to determine if it is equal to zero. The x8
+signal was changed to be input to the ALU as a selector for the  operator to
+be applied.
 
 Problem 2
