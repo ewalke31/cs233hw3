@@ -60,52 +60,59 @@ def secondPassParser(inputList):
         if len(line) != 0:
             endEntry = len(line[1])-1
             if line[1][endEntry] == ':' and len(line) > 3:
-                if line[2] in encoding.keys():
-                    output += encoding[entry[1]]
-                    if line[3].isdigit():
-                        if line[3] >= 0 and line[3] <= 15 and line[3] is not
-                        type float:
-                            output += hex(int(line[3]))
-                        else:
-                            print("Invalid address format. Error on line: " +
-                                  line[0], file=sys.stderr)
-                    else:
-                        if line[3] in labels.keys():
-                            output += labels[line[3]]
-                        else:
-                            print("Undefined label. Error on line: " + line[0],
-                                  file=sys.stderr)
-                elif line[2] == "DAT":
-                    if line[3].isdigit():
-                        if line[3] >= 0 and line[3] <= 255 and line[3] is not
-                        type float:
-                            output += hex(int(line[3]))
-                        else:
-                            print("Invalid address format. Error on line: " +
-                                  line[0], file=sys.stderr)
-                    else:
-                        if line[3] in labels.keys():
-                            output += labels[line[3]]
-                        else:
-                            print("Undefined label. Error on line: " + line[0],
-                                  file=sys.stderr)
-                else:
-                    print("Improper microinstruction. Error on line: " + line[0],
-                          file=sys.stderr)
+                output = subparser(2, line, output)
             elif line[1][endEntry] == ':' and (len(line) == 3 or len(line) > 4):
                 print("Illegal number of arguments in line: " + line[0],
                       file=sys.stderr)
-            elif 
-                    
-                                
-    return None
+            elif (line[1] in encoding.keys() or line[1] == "DAT") and len(line) == 3:
+                output = subparser(1, line, output)
+            else:
+                print("Illegal number of arguments in line: " + line[0],
+                      file=sys.stderr)
+    return output
     
+def subparser(i, line, output):
+    if line[i] in encoding.keys():
+        output += encoding[line[i]]
+        if line[i+1].isdigit():
+            if line[i+1] >= 0 and line[i+1] <= 15 and line[i+1] is not
+            type float:
+                output += hex(int(line[i+1]))
+            else:
+                print("Invalid address format. Error on line: " +
+                      line[0], file=sys.stderr)
+        else:
+            if line[i+1] in labels.keys():
+                output += labels[line[i+1]]
+            else:
+                print("Undefined label. Error on line: " + line[0],
+                      file=sys.stderr)
+    elif line[i] == "DAT":
+        if line[i+1].isdigit():
+            if line[i+1] >= 0 and line[i+1] <= 255 and line[i+1] is not
+            type float:
+                output += hex(int(line[i+1]))
+            else:
+                print("Invalid address format. Error on line: " +
+                      line[0], file=sys.stderr)
+        else:
+            if line[i+1] in labels.keys():
+                output += labels[line[i+1]]
+            else:
+                print("Undefined label. Error on line: " + line[0],
+                      file=sys.stderr)
+    else:
+        print("Improper microinstruction. Error on line: " + line[0],
+              file=sys.stderr)
+    return output
+
 
 def main():
     global labels
     inputList = readInput()
     inputList = firstPassParser(inputList)
-    print(labels)
+    output = secondPassParser(inputList)
+    print(output)
     
 if __name__ == "__main__":
     main()
