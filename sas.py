@@ -1,3 +1,4 @@
+
 # Eric Walker & Derek Reitz
 # ewalke31@jhu.edu & dreitz5@jhu.edu
 # CS233 Computer System Fundamentals HW #3
@@ -33,7 +34,7 @@ def firstPassParser(inputList):
         entry = line.split()
         segPos = 0
         for seg in entry: #removes all comments from the input for convenience
-            if seg[0] = '#':
+            if seg[0] == '#':
                 entry = entry[0:segPos]
             segPos += 1
         if len(entry) != 0:
@@ -44,13 +45,21 @@ def firstPassParser(inputList):
                     print("Label already exists. Error on line: " + inputLine,
                           file=sys.stderr)
                 else:
-                    labels.update({label:hex(currLine)})
+                    labels.update({label:str(hex(currLine))[2:]})
             currLine += 1
             if currLine >= 16:
                 print("Program is too long for the SCRAM. Error on line: " +
                       inputLine, file=sys.stderr)
-        line = entry
-        line.insert(0, inputLine) #save input line for error checking later
+        inputList[inputLine-1] = entry
+        inputList[inputLine-1].insert(0, inputLine) #save input line for error checking later
+    i = 0
+    length = len(inputList)
+    while i < length:
+        if len(inputList[i]) == 1:
+            inputList.remove(inputList[i])
+            length -= 1
+        else:
+            i += 1
     return inputList
     
 def secondPassParser(inputList):
@@ -73,11 +82,10 @@ def secondPassParser(inputList):
     
 def subparser(i, line, output):
     if line[i] in encoding.keys():
-        output += encoding[line[i]]
+        output += str(encoding[line[i]])
         if line[i+1].isdigit():
-            if line[i+1] >= 0 and line[i+1] <= 15 and line[i+1] is not
-            type float:
-                output += hex(int(line[i+1]))
+            if int(line[i+1]) >= 0 and int(line[i+1]) <= 15 and type(line[i+1]) is not float:
+                output += str(hex(int(line[i+1])))[2:]
             else:
                 print("Invalid address format. Error on line: " +
                       line[0], file=sys.stderr)
@@ -89,9 +97,8 @@ def subparser(i, line, output):
                       file=sys.stderr)
     elif line[i] == "DAT":
         if line[i+1].isdigit():
-            if line[i+1] >= 0 and line[i+1] <= 255 and line[i+1] is not
-            type float:
-                output += hex(int(line[i+1]))
+            if int(line[i+1]) >= 0 and int(line[i+1]) <= 255 and type(line[i+1]) is not float:
+                output += str(hex(int(line[i+1])))[2:]
             else:
                 print("Invalid address format. Error on line: " +
                       line[0], file=sys.stderr)
@@ -112,7 +119,7 @@ def main():
     inputList = readInput()
     inputList = firstPassParser(inputList)
     output = secondPassParser(inputList)
-    print(output)
+    print(output, file=sys.stdout)
     
 if __name__ == "__main__":
     main()
