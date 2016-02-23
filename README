@@ -72,7 +72,9 @@ Removed PC and IR(O) inputs into the MUX that selects the input for the
 accumalator. These are unnecessary because they were used in the faulty JMP
 and have no other purpose. 
 Removed the MUX input into the ALU. This is because the ALU needs two 4-bit
-inputs: 4 bits for each sequence that is operated upon. 
+inputs: 4 bits for each sequence that is operated upon.
+Also we specified that the MUX for the MAR takes the lower 4 bits when
+inputting from the MBR.
 
 Added Circuitry:
 To account for the SUB operation, we knew we could not alter the accumalator.
