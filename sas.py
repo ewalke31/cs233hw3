@@ -130,7 +130,7 @@ def main():
     out = ""
     for byte in output:
         out += chr(int(byte, 2))
-    print(out, file=sys.stdout)
+    sys.stdout.write(out)
     
 if __name__ == "__main__":
     main()
