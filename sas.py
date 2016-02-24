@@ -54,10 +54,15 @@ def firstPassParser(inputList):
                         labels.update({label:"{:0>8}".format("{0:b}".format(currLine))})
             currLine += 1
             if currLine >= 16:
+                i = 0
                 for seg in entry:
+                    endSeg = len(seg)-1
                     if seg in encoding.keys() or seg == "DAT":
                         print("Program is too long for the SCRAM. Error on line: " +
                               inputLine, file=sys.stderr)
+                    elif seg[endSeg] != ':' or (seg[endSeg] == ':' and i != 0):
+                        print("Invalid entry on line: " + inputLine, file=sys.stderr)
+                    i += 1
         inputList[inputLine-1] = entry
         inputList[inputLine-1].insert(0, inputLine) #save input line for error checking later
     i = 0
