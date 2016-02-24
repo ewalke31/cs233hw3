@@ -104,4 +104,9 @@ and requires only one gate per bit to determine if it is equal to zero. The x8
 signal was changed to be input to the ALU as a selector for the  operator to
 be applied.
 
+
 Problem 2
+
+Use python3 to run! We wrote the code using python 3. Lots of comments in
+sas.py to explain our whole process. Everything assembles and subsequently
+disassembles correctly.
