@@ -43,6 +43,9 @@ def firstPassParser(inputList):
                 if label in labels.keys():
                     print("Label already exists. Error on line: " + inputLine,
                           file=sys.stderr)
+                elif label in encoding.keys():
+                    print("Labels cannot use the same name as an instruction."+
+                        "Error on line: " + inputLine, file=sys.stderr)
                 else:
                     labels.update({label:hex(currLine)})
             currLine += 1
