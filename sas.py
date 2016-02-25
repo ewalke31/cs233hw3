@@ -120,7 +120,7 @@ def subparser(i, line, output):
             if int(line[i+1]) >= 0 and int(line[i+1]) <= 15 \
                     and type(line[i+1]) is not float:
                 # add to output, first converting to binary, then padding with
-                # 0's, adding a space to make converting to ascii easier later
+                # 0's, adding a space to make final conversion easier later
                 output += "{:0>5}".format("{0:b}".format(int(line[i+1])) + " ")
             else:  # else invalid address so print error
                 print("Invalid address format. Error on line: " +
@@ -161,10 +161,10 @@ def main():
     # remove all comments and blank lines
     output = secondPassParser(inputList).split()  # process the output
     # and split it based on the spaces added
-    out = ""
-    for byte in output:  # convert each 8 bit sequence to ascii character
-        out += chr(int(byte, 2))
-    sys.stdout.write(out)  # finally write it to stdout. done! yay :-)
+    out = bytearray()
+    for byte in output:  # place each 8 bit sequence in a bytearray
+        out.append(int(byte, 2))
+    sys.stdout.buffer.write(out)  # finally write it to stdout. done! yay :-)
 
 
 if __name__ == "__main__":
